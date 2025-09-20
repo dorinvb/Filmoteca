@@ -369,3 +369,17 @@ select option {
         font-size: 0.8rem; /* Redu mărimea fontului pentru a încăpea pe ecran */
     }
 }
+@media screen and (max-width: 768px) {
+    /* ... restul codului ... */
+
+    .nav-menu {
+        flex-direction: column; /* Asigură că butoanele rămân pe verticală */
+        align-items: center; /* Centrează butoanele pe orizontală */
+        gap: 10px; /* Păstrează un spațiu adecvat între ele */
+    }
+
+    /* Regula nouă pentru a muta selectorul mai jos */
+    .nav-menu li:last-child {
+        order: 1; /* Setează ordinea la 1 pentru a-l muta după celelalte elemente */
+    }
+}
