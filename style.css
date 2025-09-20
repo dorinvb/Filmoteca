@@ -64,6 +64,7 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Modificare: Stilul pentru selectorul de genuri pe desktop și mobil */
 select, button {
     padding: 10px 20px;
     border-radius: 30px;
@@ -83,8 +84,8 @@ select:hover, button:hover {
 }
 
 select option {
-    background: #1a2b4a;
-    color: white;
+    background: #1a2b4a; /* Fundal pentru opțiunile din dropdown */
+    color: white; /* Text alb pentru opțiunile din dropdown */
 }
 
 .container {
@@ -289,6 +290,7 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Media Query pentru dispozitive mobile */
 @media screen and (max-width: 768px) {
     .content-list {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -304,12 +306,18 @@ footer {
         height: 50px;
     }
     
+    /* Modificare: Meniul de navigare pe mobil */
     .nav-menu {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-    
+
+    /* Modificare: Mute select-ul de genuri la sfârșit */
+    .nav-menu li:last-child {
+        order: 1;
+    }
+
     .detail-title {
         font-size: 1.8rem;
     }
@@ -346,40 +354,4 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }
-select {
-    color: #fff; /* Face textul din dropdown alb pe fundalul normal */
-}
 
-select option {
-    background-color: #1a2b4a; /* Același fundal ca al elementelor content-item */
-    color: #fff; /* Text alb pentru lizibilitate */
-}
-@media screen and (max-width: 768px) {
-    /* ... (restul codului media query) ... */
-
-    .nav-menu {
-        flex-direction: row; /* Păstrează elementele pe o linie */
-        flex-wrap: nowrap; /* Previne trecerea pe rândul următor */
-        justify-content: center;
-        gap: 8px; /* Reduce spațiul dintre butoane */
-    }
-
-    .nav-link, select, button {
-        padding: 8px 12px; /* Redu padding-ul pentru a face butoanele mai mici */
-        font-size: 0.8rem; /* Redu mărimea fontului pentru a încăpea pe ecran */
-    }
-}
-@media screen and (max-width: 768px) {
-    /* ... restul codului ... */
-
-    .nav-menu {
-        flex-direction: column; /* Asigură că butoanele rămân pe verticală */
-        align-items: center; /* Centrează butoanele pe orizontală */
-        gap: 10px; /* Păstrează un spațiu adecvat între ele */
-    }
-
-    /* Regula nouă pentru a muta selectorul mai jos */
-    .nav-menu li:last-child {
-        order: 1; /* Setează ordinea la 1 pentru a-l muta după celelalte elemente */
-    }
-}
