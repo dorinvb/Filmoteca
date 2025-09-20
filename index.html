@@ -5,18 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filmoteca - Descoperă filme și seriale</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>Filmoteca</h1>
+        <h1><i class="fas fa-film"></i> Filmoteca</h1>
         <nav>
             <ul class="nav-menu">
-                <li><a href="#" class="nav-link active" data-category="all">Toate</a></li>
-                <li><a href="#" class="nav-link" data-category="movie">Filme</a></li>
-                <li><a href="#" class="nav-link" data-category="tv">Seriale</a></li>
+                <li><a href="#" class="nav-link active" data-category="all"><i class="fas fa-th"></i> Toate</a></li>
+                <li><a href="#" class="nav-link" data-category="movie"><i class="fas fa-ticket-alt"></i> Filme</a></li>
+                <li><a href="#" class="nav-link" data-category="tv"><i class="fas fa-tv"></i> Seriale</a></li>
                 <li>
                     <select id="genre-select">
                         <option value="">Toate genurile</option>
+                        <option value="28">Acțiune</option>
+                        <option value="12">Aventură</option>
+                        <option value="16">Animatie</option>
+                        <option value="35">Comedie</option>
+                        <option value="80">Crimă</option>
+                        <option value="18">Dramă</option>
+                        <option value="14">Fantezie</option>
+                        <option value="27">Horror</option>
+                        <option value="10749">Romantic</option>
+                        <option value="878">SF</option>
                     </select>
                 </li>
             </ul>
@@ -25,17 +36,20 @@
 
     <div class="container">
         <div id="content-list" class="content-list">
-            <!-- Conținutul va fi afișat aici -->
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Se încarcă...
+            </div>
         </div>
     </div>
 
     <div id="detail-page" class="detail-page hidden">
-        <button id="back-button" class="back-button">Înapoi</button>
+        <button id="back-button" class="back-button"><i class="fas fa-arrow-left"></i> Înapoi</button>
         <div id="detail-content"></div>
     </div>
 
     <footer>
         <p>Datele sunt preluate de la TMDb</p>
+        <p>© 2023 Filmoteca - Toate drepturile rezervate</p>
     </footer>
 
     <script src="script.js"></script>
