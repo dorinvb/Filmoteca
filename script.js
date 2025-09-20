@@ -2,6 +2,7 @@
 const API_KEY = "eb1741142d9a3b9ecbfacde1aa253a51"; // Cheie API TMDb (înlocuiește cu una proprie)
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
+const movieResponse = await fetch(`${PROXY_URL}${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ro-RO`);
 
 // Elemente DOM
 const contentListEl = document.getElementById('content-list');
@@ -245,3 +246,4 @@ function displayDetails(data, type) {
     `;
 
 }
+
