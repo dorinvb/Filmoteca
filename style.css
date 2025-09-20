@@ -346,3 +346,26 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }
+select {
+    color: #fff; /* Face textul din dropdown alb pe fundalul normal */
+}
+
+select option {
+    background-color: #1a2b4a; /* Același fundal ca al elementelor content-item */
+    color: #fff; /* Text alb pentru lizibilitate */
+}
+@media screen and (max-width: 768px) {
+    /* ... (restul codului media query) ... */
+
+    .nav-menu {
+        flex-direction: row; /* Păstrează elementele pe o linie */
+        flex-wrap: nowrap; /* Previne trecerea pe rândul următor */
+        justify-content: center;
+        gap: 8px; /* Reduce spațiul dintre butoane */
+    }
+
+    .nav-link, select, button {
+        padding: 8px 12px; /* Redu padding-ul pentru a face butoanele mai mici */
+        font-size: 0.8rem; /* Redu mărimea fontului pentru a încăpea pe ecran */
+    }
+}
