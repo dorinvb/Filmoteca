@@ -290,8 +290,7 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Media Query pentru dispozitive mobile */
-@media screen and (max-width: 768px) {
+/@media screen and (max-width: 400px) {
     .content-list {
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 15px;
@@ -305,19 +304,33 @@ footer {
         font-size: 1rem;
         height: 50px;
     }
-    
+
     /* Modificare: Meniul de navigare pe mobil */
     .nav-menu {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
+        flex-direction: row; /* Aliniază elementele pe orizontală */
+        flex-wrap: wrap;     /* Permite trecerea pe rândul următor */
+        justify-content: center; /* Centrează butoanele pe orizontală */
+        gap: 10px;           /* Spațiu între elemente */
+    }
+    
+    /* Micșorează butoanele pentru a încăpea pe un rând */
+    .nav-link, select, button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
     }
 
-    /* Modificare: Mute select-ul de genuri la sfârșit */
+    /* Mute selectorul de genuri pe o linie nouă */
     .nav-menu li:last-child {
-        order: 1;
+        width: 100%; /* Forțează elementul să ocupe toată lățimea, împingându-l pe un rând nou */
+        text-align: center; /* Centrează conținutul său pe rândul nou */
+        margin-top: 10px; /* Adaugă spațiu între cele două rânduri */
     }
 
+    /* Elimină regula 'display: inline' de pe desktop pentru a evita conflictele */
+    .nav-menu li {
+        display: block;
+    }
+    
     .detail-title {
         font-size: 1.8rem;
     }
@@ -354,4 +367,5 @@ footer {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }
+
 
