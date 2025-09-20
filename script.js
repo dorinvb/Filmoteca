@@ -1,8 +1,8 @@
-// script.js
-const API_KEY = "eb1741142d9a3b9ecbfacde1aa253a51"; // Cheie API TMDb (înlocuiește cu una proprie)
+// Configurație API
+const API_KEY = "eb1741142d9a3b9ecbfacde1aa253a51";
 const BASE_URL = "https://api.themoviedb.org/3";
+const PROXY_URL = "https://corsproxy.io/?";
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
-const movieResponse = await fetch(`${PROXY_URL}${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ro-RO`);
 
 // Elemente DOM
 const contentListEl = document.getElementById('content-list');
@@ -15,7 +15,6 @@ const genreSelectEl = document.getElementById('genre-select');
 // Variabile globale
 let currentCategory = 'all';
 let currentGenre = '';
-let genres = { movie: [], tv: [] };
 
 // Inițializare aplicație
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,12 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Funcție de inițializare
 async function initApp() {
     try {
-        // Obține genurile pentru filme și seriale
-        await loadGenres();
-        
-        // Populează dropdown-ul pentru genuri
-        populateGenreSelect();
-        
         // Încarcă conținutul inițial
         loadContent();
         
@@ -40,49 +33,6 @@ async function initApp() {
         console.error('Eroare la inițializare:', error);
         contentListEl.innerHTML = '<p class="error">A apărut o eroare. Vă rugăm încercați din nou.</p>';
     }
-}
-
-// Încarcă genurile din API
-async function loadGenres() {
-    try {
-        // Genuri pentru filme
-        const movieResponse = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=ro-RO`);
-        const movieData = await movieResponse.json();
-        genres.movie = movieData.genres;
-        
-        // Genuri pentru seriale
-        const tvResponse = await fetch(`${BASE_URL}/genre/tv/list?api_key=${API_KEY}&language=ro-RO`);
-        const tvData = await tvResponse.json();
-        genres.tv = tvData.genres;
-    } catch (error) {
-        console.error('Eroare la încărcarea genurilor:', error);
-    }
-}
-
-// Populează dropdown-ul pentru genuri
-function populateGenreSelect() {
-    // Adaugă genuri comune (combinație între filme și seriale)
-    const allGenres = [...genres.movie, ...genres.tv];
-    const uniqueGenres = [];
-    const addedIds = new Set();
-    
-    allGenres.forEach(genre => {
-        if (!addedIds.has(genre.id)) {
-            addedIds.add(genre.id);
-            uniqueGenres.push(genre);
-        }
-    });
-    
-    // Sortează genurile alfabetic
-    uniqueGenres.sort((a, b) => a.name.localeCompare(b.name));
-    
-    // Adaugă opțiunile în dropdown
-    uniqueGenres.forEach(genre => {
-        const option = document.createElement('option');
-        option.value = genre.id;
-        option.textContent = genre.name;
-        genreSelectEl.appendChild(option);
-    });
 }
 
 // Setup event listeners
@@ -115,7 +65,7 @@ function setupEventListeners() {
 // Încarcă conținutul în funcție de categorie și gen
 async function loadContent() {
     try {
-        contentListEl.innerHTML = '<div class="loading">Se încarcă...</div>';
+        contentListEl.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Se încarcă...</div>';
         
         let url;
         
@@ -134,16 +84,18 @@ async function loadContent() {
             displayContent(allContent);
         } else {
             // Pentru filme sau seriale specifice
-            url = `${BASE_URL}/discover/${currentCategory}?api_key=${API_KEY}&language=ro-RO&sort_by=popularity.desc`;
-            
             if (currentGenre) {
-                url += `&with_genres=${currentGenre}`;
+                url = `${BASE_URL}/discover/${currentCategory}?api_key=${API_KEY}&language=ro-RO&sort_by=popularity.desc&with_genres=${currentGenre}`;
+            } else {
+                url = `${BASE_URL}/${currentCategory}/popular?api_key=${API_KEY}&language=ro-RO`;
             }
             
-            const response = await fetch(url);
+            // Folosește proxy pentru a evita problemele CORS
+            const proxyUrl = `${PROXY_URL}${encodeURIComponent(url)}`;
+            const response = await fetch(proxyUrl);
             const data = await response.json();
             
-            displayContent(data.results);
+            displayContent(data.results || []);
         }
     } catch (error) {
         console.error('Eroare la încărcarea conținutului:', error);
@@ -151,11 +103,12 @@ async function loadContent() {
     }
 }
 
-// Fetch content helper
+// Fetch content helper cu proxy
 async function fetchContent(type, category) {
-    const response = await fetch(`${BASE_URL}/${type}/${category}?api_key=${API_KEY}&language=ro-RO`);
+    const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${type}/${category}?api_key=${API_KEY}&language=ro-RO`)}`;
+    const response = await fetch(url);
     const data = await response.json();
-    return data.results.map(item => ({ ...item, media_type: type }));
+    return (data.results || []).map(item => ({ ...item, media_type: type }));
 }
 
 // Afișează conținutul în interfață
@@ -186,7 +139,7 @@ function createContentItem(item) {
     contentItemEl.dataset.type = isMovie ? 'movie' : 'tv';
     
     contentItemEl.innerHTML = `
-        <img src="${item.poster_path ? IMG_BASE_URL + item.poster_path : 'placeholder.jpg'}" alt="${title}">
+        <img src="${item.poster_path ? IMG_BASE_URL + item.poster_path : 'https://via.placeholder.com/500x750/1a2b4a/ffffff?text=Imagine+indisponibilă'}" alt="${title}">
         <div class="content-info">
             <h2>${title}</h2>
             <p>${year}</p>
@@ -207,10 +160,11 @@ function createContentItem(item) {
 // Afișează detaliile pentru un film/serial
 async function showDetails(id, type) {
     try {
-        detailContentEl.innerHTML = '<div class="loading">Se încarcă...</div>';
+        detailContentEl.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Se încarcă...</div>';
         detailPageEl.classList.remove('hidden');
         
-        const response = await fetch(`${BASE_URL}/${type}/${id}?api_key=${API_KEY}&language=ro-RO`);
+        const url = `${PROXY_URL}${encodeURIComponent(`${BASE_URL}/${type}/${id}?api_key=${API_KEY}&language=ro-RO`)}`;
+        const response = await fetch(url);
         const data = await response.json();
         
         displayDetails(data, type);
@@ -230,20 +184,25 @@ function displayDetails(data, type) {
     
     detailContentEl.innerHTML = `
         <div class="detail-header">
-            <img class="detail-poster" src="${data.poster_path ? IMG_BASE_URL + data.poster_path : 'placeholder.jpg'}" alt="${title}">
+            <img class="detail-poster" src="${data.poster_path ? IMG_BASE_URL + data.poster_path : 'https://via.placeholder.com/400x600/1a2b4a/ffffff?text=Imagine+indisponibilă'}" alt="${title}">
             <div class="detail-info">
                 <h1 class="detail-title">${title} (${year})</h1>
                 <div class="detail-meta">
                     <span class="rating-value">${data.vote_average ? data.vote_average.toFixed(1) : 'N/A'}</span>
                     <span>${runtime}</span>
-                    <span>${data.genres.map(g => g.name).join(', ')}</span>
+                </div>
+                <div class="detail-meta">
+                    ${data.genres ? data.genres.map(g => `<span class="genre-badge">${g.name}</span>`).join('') : ''}
                 </div>
                 <h3>Sinopsis</h3>
                 <p class="detail-overview">${data.overview || 'Fără descriere disponibilă.'}</p>
-                ${data.homepage ? `<a href="${data.homepage}" target="_blank">Site oficial</a>` : ''}
+                ${data.homepage ? `<a href="${data.homepage}" target="_blank" style="color: #4dabf7; text-decoration: none;"><i class="fas fa-external-link-alt"></i> Site oficial</a>` : ''}
             </div>
         </div>
     `;
-
 }
 
+// Simulăm încărcarea inițială a datelor
+setTimeout(() => {
+    loadContent();
+}, 1500);
