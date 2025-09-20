@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="RO-ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmoteca - Descoperă filme și seriale</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Filmoteca</h1>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link active" data-category="all">Toate</a></li>
+                <li><a href="#" class="nav-link" data-category="movie">Filme</a></li>
+                <li><a href="#" class="nav-link" data-category="tv">Seriale</a></li>
+                <li>
+                    <select id="genre-select">
+                        <option value="">Toate genurile</option>
+                    </select>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="content-list" class="content-list">
+            <!-- Conținutul va fi afișat aici -->
+        </div>
+    </div>
+
+    <div id="detail-page" class="detail-page hidden">
+        <button id="back-button" class="back-button">Înapoi</button>
+        <div id="detail-content"></div>
+    </div>
+
+    <footer>
+        <p>Datele sunt preluate de la TMDb</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
