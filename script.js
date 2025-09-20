@@ -1,5 +1,5 @@
 // script.js
-const API_KEY = "a793a79b4c356a3c8c8e6c326f669f57"; // Cheie API TMDb (înlocuiește cu una proprie)
+const API_KEY = "eb1741142d9a3b9ecbfacde1aa253a51"; // Cheie API TMDb (înlocuiește cu una proprie)
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMG_BASE_URL = "https://image.tmdb.org/t/p/w500";
 
@@ -243,4 +243,5 @@ function displayDetails(data, type) {
             </div>
         </div>
     `;
+
 }
